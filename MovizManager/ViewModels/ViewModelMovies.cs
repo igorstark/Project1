@@ -345,8 +345,6 @@ namespace MovizManager.ViewModels
             AddedFilm.SourceImage = defaultImage;
             _DataStore.ListeDeMecs.Add(AddedFilm);
             MecSelected = AddedFilm;
-            // ---------------------
-
         }
 
         public bool CanExecuteGoNextCommand(object parameter)
