@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Views/ViewMovies.xaml"/>
                 <ResourceDictionary Source="./Views/ViewOneMovie.xaml"/>
+                <ResourceDictionary Source="./Views/ViewSearch.xaml"/>
                 <ResourceDictionary Source="./MovizManagerStyles/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

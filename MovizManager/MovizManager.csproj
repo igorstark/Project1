@@ -57,6 +57,7 @@
     <Compile Include="ViewModels\ViewModelMain.cs" />
     <Compile Include="ViewModels\ViewModelMovies.cs" />
     <Compile Include="ViewModels\ViewModelOneMovie.cs" />
+    <Compile Include="ViewModels\ViewModelSearch.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,6 +79,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ViewOneMovie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

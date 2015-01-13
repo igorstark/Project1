@@ -45,6 +45,8 @@ namespace MovizManager.ViewModels
         private DelegateCommand _ModifyCommand;
         // Commande de sélection de film
         private DelegateCommand _SelectCommand;
+        // Commande de recherche de film
+        private DelegateCommand _SearchCommand;
 
 
         #endregion
@@ -71,6 +73,9 @@ namespace MovizManager.ViewModels
 
         // Modification active
         private bool _ModifActivated;
+
+        // Pour générer un évènement permettant de passer à l'écran de recherche
+        private bool _Search; 
 
         private ViewModelOneMovie _ViewModelOneMovie;
         private ViewModelBase _CurrentViewModel;
@@ -155,15 +160,17 @@ namespace MovizManager.ViewModels
             get { return _SelectCommand; }
             set { SetAndNotify("SelectCommand", ref _SelectCommand, value); }
         }
+
+        // Obtient la commande pour rechercher un film
+        public DelegateCommand SearchCommand
+        {
+            get { return _SearchCommand; }
+            set { SetAndNotify("SearchCommand", ref _SearchCommand, value); }
+        }
+
+
+
         #endregion
-
-
-
-        //public Model.Movie UnMec
-        //{
-        //    get { return _AMovie; }
-        //    set { SetAndNotify("UnMec", ref _AMovie, value); }
-        //}
 
         public Model.Movie SelectedMovie
         {
@@ -219,6 +226,11 @@ namespace MovizManager.ViewModels
             set { SetAndNotify("ModifActivated", ref _ModifActivated, value); }
         }
 
+        public bool Search
+        {
+            get { return _Search; }
+            set { SetAndNotify("Search", ref _Search, value); }
+        }
 
         #endregion
 
@@ -236,6 +248,7 @@ namespace MovizManager.ViewModels
             this.PlayCommand = new DelegateCommand(ExecutePlayCommand, CanExecutePlayCommand);
             this.ModifyCommand = new DelegateCommand(ExecuteModifyCommand, CanExecuteModifyCommand);
             this._SelectCommand = new DelegateCommand(ExecuteSelectCommand, CanExecuteSelectCommand);
+            this._SearchCommand = new DelegateCommand(ExecuteSearchCommand, CanExecuteSearchCommand);
 
             Kinds = new Model.Genres();
 
@@ -288,25 +301,6 @@ namespace MovizManager.ViewModels
         }
 
 
-        //// Méthode d'exécution de la commande d'ajout de film à la liste de films
-        //private void ExecuteAddCommand(object obj)
-        //{
-
-        //    string path = Directory.GetCurrentDirectory();
-        //    path = path.Replace(@"\", "/");
-        //    string defaultImage = path + @"/Images/film.png";
-
-        //    _DataStore.ListeDeMecs.Add(new Model.Movie("", "", 0, defaultImage));
-            
-        //    //_MecSelected = _DataStore.ListeDeMecs.Last();
-        //}
-
-
-        //public bool CanExecuteAddCommand(object parameter)
-        //{
-        //    return true;
-        //}
-
         // Méthode d'exécution de la commande de suppression d'un Mec à la liste de Mec
         private void ExecuteDeleteCommand(object obj)
         {
@@ -340,7 +334,7 @@ namespace MovizManager.ViewModels
             path = path.Replace(@"\", "/");
             string defaultImage = path + @"/Images/film.png";
             
-            AddedFilm = new Model.Movie();
+            AddedFilm = new Model.Movie(); // On capte ensuite l'évènement AddedFilm
             AddedFilm.SourceImage = defaultImage;
 
             _DataStore.ListeDeMecs.Add(AddedFilm);
@@ -381,6 +375,18 @@ namespace MovizManager.ViewModels
         {
             return this.SelectedMovie != null;
         }
+
+
+        public void ExecuteSearchCommand(object parameter)
+        {
+            this.Search = true;
+        }
+
+        public bool CanExecuteSearchCommand(object parameter)
+        {
+            return true;
+        }
+
 
         private void ExecuteSelectCommand(object parameter)
         {

@@ -23,6 +23,11 @@ namespace MovizManager.TemplateSel
             {
                 template = App.Current.FindResource("ViewOneMovieTemplate") as DataTemplate;
             }
+
+            else if (item is ViewModels.ViewModelSearch)
+            {
+            template = App.Current.FindResource("ViewSearchTemplate") as DataTemplate;
+            }
             return template;
         }
     }

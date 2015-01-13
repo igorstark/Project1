@@ -10,10 +10,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.IO;
 using Microsoft.Win32;
+using System.Windows.Data;
 
 namespace MovizManager.ViewModels
 {
-    class ViewModelOneMovie : ViewModelBase
+    class ViewModelSearch : ViewModelBase
     {
 
         #region tests
@@ -38,7 +39,11 @@ namespace MovizManager.ViewModels
 
         #region Fields
 
-        // Film à ajouter
+
+        // DataStore
+        private DataStore _Storage;
+
+        // Film
         private Movie _Movie;
         
         // Liste de genres
@@ -46,6 +51,8 @@ namespace MovizManager.ViewModels
 
         // Liste de notes
         private ObservableCollection<int> _Ratings;
+
+        private string _SearchText;
 
         #region Commands
         // Commande de retour à la liste des films
@@ -83,6 +90,12 @@ namespace MovizManager.ViewModels
 
         #region Properties
 
+        public DataStore Storage
+        {
+            get { return _Storage; }
+            set { SetAndNotify("Storage", ref _Storage, value); }
+        }
+
         public Movie Movie
         {
             get { return _Movie; }
@@ -101,10 +114,17 @@ namespace MovizManager.ViewModels
             set { SetAndNotify("Ratings", ref _Ratings, value); }
         }
         
+        public string SearchText
+        {
+            get { return _SearchText; }
+            set { SetAndNotify("SearchText", ref _SearchText, value); }
+        }
+
+
         #endregion
 
         #region Constructor
-        public ViewModelOneMovie(Movie M)
+        public ViewModelSearch(DataStore DataStorage, Movie M)
         {
             this._ReturnCommand = new DelegateCommand(ExecuteReturnCommand, CanExecuteReturnCommand);
             this._CancelCommand = new DelegateCommand(ExecuteCancelCommand, CanExecuteCancelCommand);
@@ -116,20 +136,51 @@ namespace MovizManager.ViewModels
             // Liste de notes
             Ratings = new ObservableCollection<int> { 0, 1, 2, 3, 4, 5 };
 
+            this._Storage = new DataStore();
+            this._Storage.ListeDeMecs = DataStorage.ListeDeMecs;
+
             this._Movie = M;
-            if (this._Movie == null)
-            {
-                this._Movie = new Movie();
-            }
+
             
         }
 
         #endregion
 
         #region Methods
+
+        protected override void OnPropertyChanged(string property)
+        {
+            base.OnPropertyChanged(property);
+
+            switch (property)
+            {
+                case "SearchText":
+                    // Filtrer la collection
+                    CollectionViewSource.GetDefaultView(Storage.ListeDeMecs).Filter =
+                        new Predicate<object>(o => FiltrerListe(o));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private bool FiltrerListe(object o)
+        {
+            Movie movie = o as Movie;
+
+            if (movie != null)
+            {
+                return movie.MovieTitle.ToLowerInvariant().Contains(SearchText.ToLowerInvariant());
+            }
+
+            return false;
+        }
+
+
         #region Commands
         private void ExecuteReturnCommand(object parameter)
         {
+            
             this.OKButtonWasClicked = true;
         }
 

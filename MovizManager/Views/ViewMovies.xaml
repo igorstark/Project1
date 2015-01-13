@@ -22,6 +22,7 @@
                 <MenuItem Header="Contenu">
                     <MenuItem Header="Supprimer" Command="{Binding DeleteCommand}"/>
                     <MenuItem Header="Trier" Command="{Binding SortCommand}"/>
+                    <MenuItem Header="Rechercher" Command="{Binding SearchCommand}"/>
                 </MenuItem>
             </Menu>
 

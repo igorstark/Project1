@@ -18,6 +18,7 @@ namespace MovizManager.ViewModels
         private ViewModelBase _CurrentViewModel;
         private ViewModelMovies _ViewModelMovies;
         private ViewModelOneMovie _ViewModelOneMovie;
+        private ViewModelSearch _ViewModelSearch;
         #endregion
 
         #region Properties
@@ -37,6 +38,12 @@ namespace MovizManager.ViewModels
         {
             get { return _ViewModelOneMovie; }
             set { SetAndNotify("ViewModelOneMovie", ref _ViewModelOneMovie, value); }
+        }
+
+        public ViewModelSearch ViewModelSearch
+        {
+            get { return _ViewModelSearch; }
+            set { SetAndNotify("ViewModelSearch", ref _ViewModelSearch, value); }
         }
 
         #endregion
@@ -73,10 +80,19 @@ namespace MovizManager.ViewModels
                     CurrentViewModel = ViewModelOneMovie;
                     break;
 
+                case "Search":
+                    ViewModelSearch = new ViewModelSearch(this.ViewModelMovies.DataStore, this.ViewModelMovies.SelectedMovie);
+                    ViewModelSearch.PropertyChanged += ViewModelSearch_PropertyChanged;
+                    CurrentViewModel = ViewModelSearch;
+                    break;
+
+
                 default:
                     break;
             }
         }
+
+
 
         void ViewModelOneMovie_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -88,6 +104,8 @@ namespace MovizManager.ViewModels
                     break;
 
                 case "CancelButtonWasClicked":
+                    ViewModelMovies.DataStore.ListeDeMecs.Remove(ViewModelMovies.DataStore.ListeDeMecs.Last());
+                    ViewModelMovies.SelectedMovie = null;
                     CurrentViewModel = ViewModelMovies;
                     break;
 
@@ -96,6 +114,24 @@ namespace MovizManager.ViewModels
             }
         }
 
+
+        private void ViewModelSearch_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "OKButtonWasClicked":
+                    CurrentViewModel = ViewModelMovies;
+                    ViewModelMovies.SelectedMovie = ViewModelSearch.Movie;
+                    break;
+
+                case "CancelButtonWasClicked":
+                    CurrentViewModel = ViewModelMovies;
+                    break;
+
+                default:
+                    break;
+            }
+        }
         #endregion
 
     }
