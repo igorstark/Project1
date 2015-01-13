@@ -61,8 +61,7 @@ namespace MovizManager.ViewModels
             switch (e.PropertyName)
             {
                 case "GoNextSelected":
-
-                    ViewModelOneMovie = new ViewModelOneMovie(this.ViewModelMovies.MecSelected); // Comment le zigouiller après ?
+                    ViewModelOneMovie = new ViewModelOneMovie(this.ViewModelMovies.SelectedMovie); 
                     ViewModelOneMovie.PropertyChanged += ViewModelOneMovie_PropertyChanged;
                     CurrentViewModel = ViewModelOneMovie;
 
@@ -84,9 +83,14 @@ namespace MovizManager.ViewModels
             //CurrentViewModel = ViewModelMovies;
             switch (e.PropertyName)
             {
-                case "ButtonWasClicked":
+                case "OKButtonWasClicked":
                     CurrentViewModel = ViewModelMovies;
                     break;
+
+                case "CancelButtonWasClicked":
+                    CurrentViewModel = ViewModelMovies;
+                    break;
+
                 default:
                     break;
             }

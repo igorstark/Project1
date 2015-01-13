@@ -13,6 +13,7 @@ namespace MovizManager.Model
         private string _MovieTitle;
         private string _Nom;
         private int _Age;
+        private TimeSpan _Duration;
         private string _SourceImage;
         private string _Genre;
         private bool _Watched;
@@ -34,6 +35,12 @@ namespace MovizManager.Model
         {
             get { return _Age; }
             set { SetAndNotify("Age", ref _Age, value); }
+        }
+
+        public TimeSpan Duration
+        {
+            get { return _Duration; }
+            set { SetAndNotify("Duration", ref _Duration, value);}
         }
 
         public string SourceImage

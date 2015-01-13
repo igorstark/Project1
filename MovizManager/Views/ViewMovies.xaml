@@ -49,7 +49,7 @@
                 <ComboBox Name="myComboBox2"
                   Grid.Column="5"
                       SelectedIndex="0"
-                      ItemsSource="{Binding LesGenres.Genre}"
+                      ItemsSource="{Binding Kinds.Genre}"
                       SelectedItem="{Binding GenreSelected}">
                 </ComboBox>
             </Grid>
@@ -70,7 +70,7 @@
                      Grid.Column="1"
                      Style="{DynamicResource ListBoxStyle}"
                      ItemsSource="{Binding DataStore.ListeDeMecs}"
-                     SelectedItem="{Binding MecSelected, Mode=TwoWay}"
+                     SelectedItem="{Binding SelectedMovie, Mode=TwoWay}"
                      Margin="5,5,0,5" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      >
@@ -96,7 +96,7 @@
                     <!--<ListBox.Style>
                     <Style>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding MecSelected.Genre}" Value="Humain">
+                            <DataTrigger Binding="{Binding SelectedMovie.Genre}" Value="Humain">
                                 <DataTrigger.Setters>
                                     <Setter Property="ListBox.Background" Value="#68FF0000"/>
                                 </DataTrigger.Setters>
@@ -110,8 +110,8 @@
                 <ListBox 
                      Grid.Column="2"
                      Style="{DynamicResource ListBoxStyle}"
-                     ItemsSource="{Binding ListeFiltreeDeMecs}"
-                     SelectedItem="{Binding MecSelected, Mode=TwoWay}"
+                     ItemsSource="{Binding FilteredMovies}"
+                     SelectedItem="{Binding SelectedMovie, Mode=TwoWay}"
                      Margin="5,5,0,5"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      >
@@ -149,8 +149,7 @@
                 </ListBox>
 
                 <!-- Ci-dessus : DataContext = objet / Source = propriété exposée-->
-
-                <!--Titre a été transformé en Prénom-->
+                
                 <Label Grid.Column="5" Content="Titre"/>
                 <Label Grid.Column="5" Content="Fichier" Margin="0,30,0,0"/>
                 <Label Grid.Column="5" Content="Note" Margin="0,60,0,0"/>
@@ -160,7 +159,7 @@
 
                 <Image
                    Grid.Column="6"
-                   DataContext="{Binding MecSelected}"
+                   DataContext="{Binding SelectedMovie}"
                    Source="{Binding SourceImage}"
                    Margin="0,250,0,0"
                    VerticalAlignment="Top">
@@ -175,7 +174,7 @@
                          Style="{DynamicResource TextBoxStyle}"
                          IsEnabled="{Binding ModifActivated}">
                     <TextBox.Text>
-                        <Binding Path="MecSelected.MovieTitle" UpdateSourceTrigger="PropertyChanged"/>
+                        <Binding Path="SelectedMovie.MovieTitle" UpdateSourceTrigger="PropertyChanged"/>
                     </TextBox.Text>
                 </TextBox>
 
@@ -187,7 +186,7 @@
                          HorizontalAlignment="Left"
                          IsEnabled="{Binding ModifActivated}">
                     <TextBox.Text>
-                        <Binding Path="MecSelected.Nom" UpdateSourceTrigger="PropertyChanged"/>
+                        <Binding Path="SelectedMovie.Nom" UpdateSourceTrigger="PropertyChanged"/>
                     </TextBox.Text>
                 </TextBox>
 
@@ -205,7 +204,7 @@
                          Style="{DynamicResource TextBoxStyle}"
                          IsEnabled="{Binding ModifActivated}">
                     <TextBox.Text>
-                        <Binding Path="MecSelected.Age" UpdateSourceTrigger="PropertyChanged"/>
+                        <Binding Path="SelectedMovie.Age" UpdateSourceTrigger="PropertyChanged"/>
                     </TextBox.Text>
                 </TextBox>
 
@@ -215,7 +214,7 @@
 
                          IsEnabled="{Binding ModifActivated}">
                     <TextBox.Text>
-                        <Binding Path="MecSelected.SourceImage" UpdateSourceTrigger="PropertyChanged"/>
+                        <Binding Path="SelectedMovie.SourceImage" UpdateSourceTrigger="PropertyChanged"/>
                     </TextBox.Text>
                 </TextBox>
 
@@ -225,8 +224,8 @@
                       VerticalAlignment="Top"
                       Margin="0,120,0,0"
                       Height="25"
-                      ItemsSource="{Binding LesGenres.Genre}"
-                      SelectedItem="{Binding MecSelected.Genre}"
+                      ItemsSource="{Binding Kinds.Genre}"
+                      SelectedItem="{Binding SelectedMovie.Genre}"
                       IsEnabled="{Binding ModifActivated}">
                 </ComboBox>
 
@@ -234,7 +233,7 @@
                     Grid.Column="6"
                     VerticalAlignment="Top"
                     Margin="0,155,0,0"
-                    IsChecked="{Binding MecSelected.Watched}"
+                    IsChecked="{Binding SelectedMovie.Watched}"
                     IsEnabled="{Binding ModifActivated}"/>
                 
                 

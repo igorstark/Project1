@@ -25,12 +25,21 @@ namespace MovizManager.ViewModels
             private set { SetAndNotify("GoPrevious", ref _GoPrevious, value); }
         }
 
-        private bool _ButtonWasClicked;
-        public bool ButtonWasClicked
+        private bool _OKButtonWasClicked;
+        public bool OKButtonWasClicked
         {
-            get { return _ButtonWasClicked; }
-            set { SetAndNotify("ButtonWasClicked", ref _ButtonWasClicked, value); }
+            get { return _OKButtonWasClicked; }
+            set { SetAndNotify("OKButtonWasClicked", ref _OKButtonWasClicked, value); }
         }
+
+
+        private bool _CancelButtonWasClicked;
+        public bool CancelButtonWasClicked
+        {
+            get { return _CancelButtonWasClicked; }
+            set { SetAndNotify("CancelButtonWasClicked", ref _CancelButtonWasClicked, value); }
+        }
+
 
         #endregion
 
@@ -40,7 +49,7 @@ namespace MovizManager.ViewModels
         private Movie _Movie;
         
         // Liste de genres
-        private Genres _LesGenres;
+        private Genres _Kinds;
 
         // Liste de notes
         private ObservableCollection<int> _Ratings;
@@ -48,6 +57,9 @@ namespace MovizManager.ViewModels
         #region Commands
         // Commande de retour à la liste des films
         private DelegateCommand _ReturnCommand;
+
+        // Commande d'annulation d'ajout de film
+        private DelegateCommand _CancelCommand;
 
         // Commande de sélection de film
         private DelegateCommand _SelectCommand;
@@ -57,6 +69,13 @@ namespace MovizManager.ViewModels
         {
             get { return _ReturnCommand; }
             private set { SetAndNotify("ReturnCommand", ref _ReturnCommand, value); }
+        }
+
+
+        public DelegateCommand CancelCommand
+        {
+            get { return _CancelCommand; }
+            private set { SetAndNotify("CancelCommand", ref _CancelCommand, value); }
         }
 
         public DelegateCommand SelectCommand
@@ -77,10 +96,10 @@ namespace MovizManager.ViewModels
             set { SetAndNotify("Movie", ref _Movie, value); }
         }
 
-        public Model.Genres LesGenres
+        public Genres Kinds
         {
-            get { return _LesGenres; }
-            set { SetAndNotify("LesGenres", ref _LesGenres, value); }
+            get { return _Kinds; }
+            set { SetAndNotify("Kinds", ref _Kinds, value); }
         }
 
         public ObservableCollection<int> Ratings
@@ -95,10 +114,11 @@ namespace MovizManager.ViewModels
         public ViewModelOneMovie(Movie M)
         {
             this._ReturnCommand = new DelegateCommand(ExecuteReturnCommand, CanExecuteReturnCommand);
+            this._CancelCommand = new DelegateCommand(ExecuteCancelCommand, CanExecuteCancelCommand);
             this._SelectCommand = new DelegateCommand(ExecuteSelectCommand, CanExecuteSelectCommand);
             
             // Liste des genres
-            LesGenres = new Genres();
+            Kinds = new Genres();
 
             // Liste de notes
             Ratings = new ObservableCollection<int> { 0, 1, 2, 3, 4, 5 };
@@ -107,7 +127,6 @@ namespace MovizManager.ViewModels
             if (this._Movie == null)
             {
                 this._Movie = new Movie();
-                // this._Movie.Age = 0;
             }
             
         }
@@ -118,13 +137,27 @@ namespace MovizManager.ViewModels
         #region Commands
         private void ExecuteReturnCommand(object parameter)
         {
-            this.ButtonWasClicked = true;
+            this.OKButtonWasClicked = true;
         }
 
         public bool CanExecuteReturnCommand(object parameter)
         {
             return true;
         }
+
+
+        private void ExecuteCancelCommand(object parameter)
+        {
+            this._Movie = null;
+            this.CancelButtonWasClicked = true;
+        }
+
+        public bool CanExecuteCancelCommand(object parameter)
+        {
+            return true;
+        }
+
+
 
         private void ExecuteSelectCommand(object parameter)
         {

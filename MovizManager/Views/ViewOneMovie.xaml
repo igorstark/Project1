@@ -27,9 +27,9 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="2" Content="Titre"/>
-                <Label Grid.Row="3" Content="Fichier"/>
+                <Label Grid.Row="3" Content="Visuel"/>
                 <Label Grid.Row="4" Content="Note"/>
-                <Label Grid.Row="5" Content="Visuel"/>
+                <Label Grid.Row="5" Content="Fichier"/>
                 <Label Grid.Row="6" Content="Genre"/>
                 <Label Grid.Row="7" Content="Vu"/>
             </Grid>
@@ -56,12 +56,23 @@
                 </TextBox>
 
                 <Button Grid.Row="3"
-                        Height="30"
+                        Height="22"
                         Width="80"
                         HorizontalAlignment="Left"
+                        Margin="0,-10,0,0"
                         Content="Sélectionner"
                         Command="{Binding Path=SelectCommand}"/>
-                        
+                
+                <TextBox Grid.Row="3"
+                         Style="{DynamicResource TextBoxStyle}"
+                         Width="100"
+                         HorizontalAlignment="Right">
+                    <TextBox.Text>
+                        <Binding Path="Movie.SourceImage"/>
+                    </TextBox.Text>
+                </TextBox>
+
+
                 <ComboBox 
                       SelectedIndex="0"
                       Grid.Row="4"
@@ -78,7 +89,7 @@
                       Grid.Row="6"
                       VerticalAlignment="Top"
                       Height="25"
-                      ItemsSource="{Binding LesGenres.Genre}"
+                      ItemsSource="{Binding Kinds.Genre}"
                       SelectedItem="{Binding Movie.Genre}">
                 </ComboBox>
                 

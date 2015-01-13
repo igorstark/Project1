@@ -51,18 +51,17 @@ namespace MovizManager.ViewModels
         // Le DataStore
         private Model.DataStore _DataStore;
         
-        // Un Mec, nécessaire pour le binding avec les champs du XAML
-        
-        private Model.Movie _UnMec;
+        // Un film
+        // private Model.Movie _AMovie;
 
         // Liste de films
-        private ObservableCollection<Model.Movie> _ListeFiltreeDeMecs;
+        private ObservableCollection<Model.Movie> _FilteredMovies;
 
         // Liste de genres
-        private Model.Genres _LesGenres;
+        private Model.Genres _Kinds;
 
         // Mec sélectionné
-        private Model.Movie _MecSelected;
+        private Model.Movie _SelectedMovie;
 
         // Film ajouté
         private Model.Movie _AddedMovie;
@@ -160,16 +159,16 @@ namespace MovizManager.ViewModels
 
 
 
-        public Model.Movie UnMec
-        {
-            get { return _UnMec; }
-            set { SetAndNotify("UnMec", ref _UnMec, value); }
-        }
+        //public Model.Movie UnMec
+        //{
+        //    get { return _AMovie; }
+        //    set { SetAndNotify("UnMec", ref _AMovie, value); }
+        //}
 
-        public Model.Movie MecSelected
+        public Model.Movie SelectedMovie
         {
-            get { return _MecSelected; }
-            set { SetAndNotify("MecSelected", ref _MecSelected, value); }
+            get { return _SelectedMovie; }
+            set { SetAndNotify("SelectedMovie", ref _SelectedMovie, value); }
         }
 
         public Model.Movie AddedFilm
@@ -184,16 +183,16 @@ namespace MovizManager.ViewModels
             set { SetAndNotify("DataStore", ref _DataStore, value); }
         }
 
-        public ObservableCollection<Model.Movie> ListeFiltreeDeMecs
+        public ObservableCollection<Model.Movie> FilteredMovies
         {
-            get { return _ListeFiltreeDeMecs; }
-            set { SetAndNotify("ListeFiltreeDeMecs", ref _ListeFiltreeDeMecs, value); }
+            get { return _FilteredMovies; }
+            set { SetAndNotify("FilteredMovies", ref _FilteredMovies, value); }
         }
 
-        public Model.Genres LesGenres
+        public Model.Genres Kinds
         {
-            get { return _LesGenres; }
-            set { SetAndNotify("LesGenres", ref _LesGenres, value); }
+            get { return _Kinds; }
+            set { SetAndNotify("Kinds", ref _Kinds, value); }
         }
 
         public string GenreSelected
@@ -230,7 +229,7 @@ namespace MovizManager.ViewModels
             this.QuitCommand = new DelegateCommand(ExecuteQuitCommand, CanExecuteQuitCommand);
             this.SaveCommand = new DelegateCommand(ExecuteSaveCommand, CanExecuteSaveCommand);
             this.AboutCommand = new DelegateCommand(ExecuteAboutCommand, CanExecuteAboutCommand);
-            this.AddCommand = new DelegateCommand(ExecuteAddCommand, CanExecuteAddCommand);
+            // this.AddCommand = new DelegateCommand(ExecuteAddCommand, CanExecuteAddCommand);
             this.DeleteCommand = new DelegateCommand(ExecuteDeleteCommand, CanExecuteDeleteCommand);
             this.SortCommand = new DelegateCommand(ExecuteSortCommand, CanExecuteSortCommand);
             this.GoNextCommand = new DelegateCommand(ExecuteGoNextCommand, CanExecuteGoNextCommand);
@@ -238,7 +237,7 @@ namespace MovizManager.ViewModels
             this.ModifyCommand = new DelegateCommand(ExecuteModifyCommand, CanExecuteModifyCommand);
             this._SelectCommand = new DelegateCommand(ExecuteSelectCommand, CanExecuteSelectCommand);
 
-            LesGenres = new Model.Genres();
+            Kinds = new Model.Genres();
 
             // Instanciation du DataStore et chargement des données
             _DataStore = new Model.DataStore();
@@ -289,36 +288,36 @@ namespace MovizManager.ViewModels
         }
 
 
-        // Méthode d'exécution de la commande d'ajout de film à la liste de films
-        private void ExecuteAddCommand(object obj)
-        {
+        //// Méthode d'exécution de la commande d'ajout de film à la liste de films
+        //private void ExecuteAddCommand(object obj)
+        //{
 
-            string path = Directory.GetCurrentDirectory();
-            path = path.Replace(@"\", "/");
-            string defaultImage = path + @"/Images/film.png";
+        //    string path = Directory.GetCurrentDirectory();
+        //    path = path.Replace(@"\", "/");
+        //    string defaultImage = path + @"/Images/film.png";
 
-            _DataStore.ListeDeMecs.Add(new Model.Movie("", "", 0, defaultImage));
+        //    _DataStore.ListeDeMecs.Add(new Model.Movie("", "", 0, defaultImage));
             
-            //_MecSelected = _DataStore.ListeDeMecs.Last();
-        }
+        //    //_MecSelected = _DataStore.ListeDeMecs.Last();
+        //}
 
 
-        public bool CanExecuteAddCommand(object parameter)
-        {
-            return true;
-        }
+        //public bool CanExecuteAddCommand(object parameter)
+        //{
+        //    return true;
+        //}
 
         // Méthode d'exécution de la commande de suppression d'un Mec à la liste de Mec
         private void ExecuteDeleteCommand(object obj)
         {
-            _DataStore.ListeDeMecs.Remove(this.MecSelected);
+            _DataStore.ListeDeMecs.Remove(this.SelectedMovie);
             _DataStore.SaveData(".\\data.mvz");
 
         }
 
         public bool CanExecuteDeleteCommand(object parameter)
         {
-            return this.MecSelected != null;
+            return this.SelectedMovie != null;
         }
 
         // Méthode d'exécution de la commande de suppression d'un Mec à la liste de Mec
@@ -343,8 +342,9 @@ namespace MovizManager.ViewModels
             
             AddedFilm = new Model.Movie();
             AddedFilm.SourceImage = defaultImage;
+
             _DataStore.ListeDeMecs.Add(AddedFilm);
-            MecSelected = AddedFilm;
+            SelectedMovie = AddedFilm;
         }
 
         public bool CanExecuteGoNextCommand(object parameter)
@@ -356,8 +356,8 @@ namespace MovizManager.ViewModels
         {
             try
             {
-                Process.Start(MecSelected.Nom);
-                this.MecSelected.Watched = true;
+                Process.Start(SelectedMovie.Nom);
+                this.SelectedMovie.Watched = true;
             }
             catch (Exception e)
             {
@@ -369,7 +369,7 @@ namespace MovizManager.ViewModels
 
         public bool CanExecutePlayCommand(object parameter)
         {
-            return this.MecSelected != null;
+            return this.SelectedMovie != null;
         }
 
         public void ExecuteModifyCommand(object parameter)
@@ -379,7 +379,7 @@ namespace MovizManager.ViewModels
 
         public bool CanExecuteModifyCommand(object parameter)
         {
-            return this.MecSelected != null;
+            return this.SelectedMovie != null;
         }
 
         private void ExecuteSelectCommand(object parameter)
@@ -394,7 +394,7 @@ namespace MovizManager.ViewModels
 
                 if (userClickedOK == true)
                 {
-                    this.MecSelected.Nom = openFileDialog.FileName;
+                    this.SelectedMovie.Nom = openFileDialog.FileName;
                 }
             }
             catch (Exception e)
@@ -420,7 +420,7 @@ namespace MovizManager.ViewModels
             {
                 case "GenreSelected":
                     // On retourne uniquement les 3 premiers de la liste
-                    this.ListeFiltreeDeMecs = new ObservableCollection<Model.Movie>(_DataStore.ListeDeMecs.Where(m => m.Genre == GenreSelected).Take(3));
+                    this.FilteredMovies = new ObservableCollection<Model.Movie>(_DataStore.ListeDeMecs.Where(m => m.Genre == GenreSelected).Take(3));
                     if (this.ModifActivated)
                     {
                         // Enregistrement si l'un des films a été modifié
@@ -430,7 +430,7 @@ namespace MovizManager.ViewModels
                     
                     //ListeFiltreeDeMecs = new ObservableCollection<Model.Mec>(ListeDeMecs.Where(m => m.Age > 500));
                     break;
-                case "MecSelected":
+                case "SelectedMovie":
                     if (this.ModifActivated)
                     {   
                         // Enregistrement si l'un des films a été modifié
